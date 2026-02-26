@@ -1,0 +1,27 @@
+projeto-customtkinter/
+│
+├── app/
+│   ├── main.py              # Entry point
+│   │
+│   ├── views/               # Telas (Frames)
+│   │   ├── menu_view.py
+│   │   └── detail_view.py
+│   │
+│   ├── services/            # Regras de negócio
+│   │   └── file_service.py
+|   |   └── upload_service.py
+|   |   └── compressed_service.py
+|   |   └── decompressed_service.py
+|   |   └── conversion_service.py
+│   │
+│   └── core/                # Configurações
+│       ├── config.py
+│       └── theme.py
+│
+├── assets/                  # Imagens, ícones
+│
+├── tests/                   # Opcional
+│   └── test_services.py
+│
+├── requirements.txt
+└── README.md
