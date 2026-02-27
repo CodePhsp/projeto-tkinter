@@ -10,6 +10,7 @@ class RenderPreview():
         # CONFIGURAÇÃO DO PAINEL REDIMENSIONAVEL
         self.fr_main = tk.Frame(root, width=100, height=100, background='black')
         self.fr_main.pack(side='left', fill='both', expand='yes')
+    
 
         self.painel_redimensionavel = tk.PanedWindow(self.fr_main, width=100, height=100, orient='horizontal')
         self.painel_redimensionavel.pack(side='left', fill='both', expand='yes')
@@ -18,6 +19,12 @@ class RenderPreview():
         self.fr_lista_arquivos = tk.Frame(self.painel_redimensionavel, width=100, height=100, background='gray25')
         self.fr_lista_arquivos.pack(side='left', fill='both', expand='yes')
 
+        # ACTION VISUALIZER
+        self.fr_action_visualizer = tk.Frame(self.fr_lista_arquivos, width= 100, height= 100, background='gray25')
+        self.fr_action_visualizer.pack(side='top', fill='x')
+        
+        self.btn_visualizer = tk.Button(self.fr_action_visualizer, text='visualizer', font=('Courier', 10, 'bold'), command= self.action_visualizer)
+        self.btn_visualizer.pack(side='right', fill='x', padx=10, pady=10)
         
         # self.ID_en = Entry(self.fr_container_views, bd=0)
         # self.ID_en.place(relx=0.12, rely=0.45)
@@ -46,14 +53,28 @@ class RenderPreview():
         
         #self.update_list_of_file()
 
+        self.painel_redimensionavel.add(self.fr_lista_arquivos)
 
+    def action_visualizer(self):
         # AQUI VAI MOSTAR A IMAGEM
         self.fr_image = tk.Frame(self.painel_redimensionavel, width=20, height=100, border=0)
         self.fr_image.pack(side='left', fill='both', expand='yes')
 
+        # ACTION RETRY
+        self.fr_action_back = tk.Frame(self.fr_image, width= 100, height= 100, background='gray25')
+        self.fr_action_back.pack(side='top', fill='x')
+        
+        self.btn_back = tk.Button(self.fr_action_back, text='X', font=('Courier', 10, 'bold'), command= self.action_back)
+        self.btn_back.pack(side='right', fill='x', padx=10, pady=10)
+
+
         self.lb_image = tk.Label(self.fr_image, text='Selecione um arquivo para visualizar.', background='gray30', foreground='white', font=('Courier', 8))
         self.lb_image.pack(fill='both', expand='yes')
-
-
-        self.painel_redimensionavel.add(self.fr_lista_arquivos)
+        
         self.painel_redimensionavel.add(self.fr_image, minsize=220)
+
+        self.btn_visualizer.configure(state='disabled')
+
+    def action_back(self):
+        self.fr_image.destroy()
+        self.btn_visualizer.configure(state='normal')

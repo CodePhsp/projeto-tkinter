@@ -28,7 +28,7 @@ class Form:
 
         # BUTTON SEARCH---
         self.fr_action_search = tk.Frame(self.fr_form, width= 100, height= 100, background='gray25')
-        self.fr_action_search.pack(side='top', fill='x', expand='yes')
+        self.fr_action_search.pack(side='top', fill='x')
         
         self.btn_search = tk.Button(self.fr_action_search, text='search', font=('Courier', 10, 'bold'), command= self.action_search)
         self.btn_search.pack(side='right', fill='x', padx=10)
