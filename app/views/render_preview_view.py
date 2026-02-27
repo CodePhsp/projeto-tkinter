@@ -64,11 +64,11 @@ class RenderPreview():
         self.fr_action_back = tk.Frame(self.fr_image, width= 100, height= 100, background='gray25')
         self.fr_action_back.pack(side='top', fill='x')
         
-        self.btn_back = tk.Button(self.fr_action_back, text='X', font=('Courier', 10, 'bold'), command= self.action_back)
+        self.btn_back = tk.Button(self.fr_action_back, text='close view', font=('Courier', 10, 'bold'), command= self.action_back)
         self.btn_back.pack(side='right', fill='x', padx=10, pady=10)
 
 
-        self.lb_image = tk.Label(self.fr_image, text='Selecione um arquivo para visualizar.', background='gray30', foreground='white', font=('Courier', 8))
+        self.lb_image = tk.Label(self.fr_image, text='Select a file to view.', background='gray30', foreground='white', font=('Courier', 12))
         self.lb_image.pack(fill='both', expand='yes')
         
         self.painel_redimensionavel.add(self.fr_image, minsize=220)
