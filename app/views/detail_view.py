@@ -1,2 +1,0 @@
-class DetailGui():
-    pass
