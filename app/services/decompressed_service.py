@@ -11,10 +11,11 @@ class DecompressedFile():
             image_stream = io.BytesIO(image_bytes)
 
             image = Image.open(image_stream)
-            # image.thumbnail((100,100)) -> Ao utilizar o panedWindow a imagem poderá "renderizar" no tamanho original dela 
+            image.thumbnail((500,500))
 
-            self.decompress_image = ImageTk.PhotoImage(image) # Referência da imagem na memória
-            self.lb_placholder.config(image=self.decompress_image)
+            self.decompress_image = ImageTk.PhotoImage(image)
+            
+            return self.decompress_image
 
-        except Exception as ex:
-            print("Error:", ex)
+        except Exception as err:
+            print("Error decompress file:", err)

@@ -12,9 +12,10 @@ class SearchFile():
         file = Path(ask_file_path) 
 
         data = {
+            'path': file,
             'name_base': file.name,
             'extension': file.suffix,
-            'size': file.stat().st_size
+            'size': file.stat().st_size,
         }
         
         return data
