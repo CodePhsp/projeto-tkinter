@@ -52,6 +52,9 @@ app/
 ### Visualização de Arquivo
 ![Visualização](docs/screenshots/preview.png)
 
+## Demonstração
+
+![Demonstração do Sistema](docs/demo.gif)
 
 ---
 
