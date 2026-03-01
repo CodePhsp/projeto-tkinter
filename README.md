@@ -58,6 +58,23 @@ app/
 ## Execução
 
 ```bash
+step 1:
+
 git clone https://github.com/CodePhsp/projeto-tkinter.git
 cd projeto-tkinter/app
+
+step 2:
+> no windows
+python -m venv .venv
+venv\Scripts\activate  
+
+> no linux:
+python3 -m venv venv
+source venv/bin/activate
+
+step 3:
+python -m pip install -r requirements.txt
+
+step 4:
+cd app
 python main.py
