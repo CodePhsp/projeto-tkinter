@@ -1,11 +1,15 @@
 import tkinter as tk
-from services.upload_service import UploadFile
+
 
 
 
 class Form:
-    def form(self, root, service, on_update_sucess) -> None:
-        self.service = service
+    """
+    View: Formulário
+    """
+    def form(self, root, service_search, service_upload, on_update_sucess) -> None:
+        self.service_search = service_search
+        self.service_upload = service_upload
         self.on_update_sucess = on_update_sucess
 
 
@@ -34,7 +38,7 @@ class Form:
         self.fr_action_search = tk.Frame(self.fr_form, width= 100, height= 100, background='gray25')
         self.fr_action_search.pack(side='top', fill='x')
         
-        self.btn_search = tk.Button(self.fr_action_search, text='search', font=('Courier', 10, 'bold'), command= self.action_search)
+        self.btn_search = tk.Button(self.fr_action_search, text='search', font=('Courier', 10, 'bold'), command= self.action_search) 
         self.btn_search.pack(side='right', fill='x', padx=10)
 
         # DESCRIPTION FILE---
@@ -49,13 +53,13 @@ class Form:
         
         self.en_description_file = tk.Text(self.fr_children_description_file, width=10, height=10, font=('Courier', 12, 'bold'))
         self.en_description_file.pack(side='top', fill='x', padx= 10)
-        self.en_description_file.insert(tk.END, "Insira uma descrição...\n")
+        self.en_description_file.insert(tk.END, "Enter a description...")
 
         # BUTTON UPLOAD---
         self.fr_action_description_file = tk.Frame(self.fr_form, width= 100, height= 100, background='gray25')
         self.fr_action_description_file.pack(side='top', fill='x', padx= 10)
 
-        self.btn_upload = tk.Button(self.fr_action_description_file, text='upload file', state='disabled', font=('Courier', 10, 'bold'), command= self.action_upload)
+        self.btn_upload = tk.Button(self.fr_action_description_file, text='upload file', state='disabled', font=('Courier', 10, 'bold'), command= self.action_upload) 
         self.btn_upload.pack(side='right', fill='x', pady=5)
 
         # INFORMATIONS ADDITIONNELLES
@@ -83,19 +87,19 @@ class Form:
         self.en_size_file = tk.Entry(self.fr_size_file, textvariable=self.size_file, font=('Courier', 12, 'bold'), state='disabled')
         self.en_size_file.pack(side='left', fill='x', expand='yes')
 
-    
     def action_search(self):
-        self.file = self.service.ask_file()
+        self.file = self.service_search.ask_file()
         self.origem_path_file.set(self.file.get('name_base'))
         self.extension_file.set(self.file.get('extension'))
         self.size_file.set(self.file.get('size'))
 
         self.btn_upload.configure(state='normal')
-        
+
+
     def action_upload(self):
         # GET VALUES
         file_name = self.en_origem.get()
-        description = self.en_description_file.get('1.0', tk.END)
+        description = self.en_description_file.get('1.0', 'end-1c')
         extension = self.en_extension_file.get()
         
         # EXCLUDE VELUES OF ENTRYS
@@ -114,12 +118,11 @@ class Form:
         self.en_size_file.configure(state='disabled')
         
         # SET VALUE STANDARD
-        self.en_description_file.insert(tk.END, "Insira uma descrição...\n")
+        self.en_description_file.insert(tk.END, "Enter a description...")
 
-        service = UploadFile()
-        service.upload_file(self.file.get('path'), file_name, description, extension)
+        
+        self.service_upload.upload_file(self.file.get('path'), file_name, description, extension)
         self.btn_upload.configure(state='disabled')
         
-        if service:
+        if self.service_upload:
             self.on_update_sucess()
-        
