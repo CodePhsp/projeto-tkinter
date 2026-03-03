@@ -58,7 +58,7 @@ class RepositoryFile:
 
 
     def read_all(self) -> list:    
-        sql_query = ("SELECT id, name_file, description, date_modify, type_file FROM tbl_files")
+        sql_query = ("SELECT id, name_file, description, date_modify, type_file FROM tbl_files ORDER BY id desc")
         self._cursor.execute(sql_query)
         all_files = self._cursor.fetchall()
 
