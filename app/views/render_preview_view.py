@@ -3,9 +3,12 @@ import tkinter as tk
 from repositories.repository import RepositoryFile
 
 
+
+
+
 class RenderPreview:
     """
-    Define um espaço para renderizar a imagem em um painel redimensionável
+    View: Renderiza imagens em um painel redimensionável
     """
     def __init__(self) -> None:
         self.bd = RepositoryFile()
@@ -13,8 +16,8 @@ class RenderPreview:
         self.preview_active = False
     
     
-    def frame_preview(self, root, service) -> None:
-        self.service_decompress = service
+    def frame_preview(self, root, service_decompress) -> None:
+        self.service_decompress = service_decompress
         
         self.fr_main = tk.Frame(root, width=100, height=100, background='black')
         self.fr_main.pack(side='left', fill='both', expand='yes')
@@ -31,12 +34,8 @@ class RenderPreview:
         self.fr_action_visualizer = tk.Frame(self.fr_lista_arquivos, width= 100, height= 100, background='gray25')
         self.fr_action_visualizer.pack(side='top', fill='x')
         
-        self.btn_visualizer = tk.Button(self.fr_action_visualizer, text='preview pane', font=('Courier', 10, 'bold'), command= self.action_visualizer)
+        self.btn_visualizer = tk.Button(self.fr_action_visualizer, text='Preview pane', font=('Courier', 10, 'bold'), command= self.action_visualizer)
         self.btn_visualizer.pack(side='right', fill='x', padx=10, pady=10)
-        
-
-        self.en_id = tk.Entry(self.fr_action_visualizer, bd=0, background='gray25', foreground='gray25')
-        self.en_id.place(x=0, y=0)
 
         # Treeview - Titles
         self.see_list_of_files = ttk.Treeview(self.fr_lista_arquivos, height=15, column=('col1', 'col2', 'col3', 'col4', 'col5'))
@@ -64,26 +63,35 @@ class RenderPreview:
         
         
         self.action_update_list()
-
+        
         self.painel_redimensionavel.add(self.fr_lista_arquivos)
 
-
-    def action_visualizer(self):
-        if not self.preview_active:
+    def action_visualizer(self) -> None:
+        if not self.preview_active: # (true)
             self.fr_image = tk.Frame(self.painel_redimensionavel, width=100, height=100, border=0)
             self.fr_image.pack(side='left', fill='both', expand='yes')
 
-            self.fr_action_back = tk.Frame(self.fr_image, width= 100, height= 100, background='gray25')
-            self.fr_action_back.pack(side='top', fill='x')
+            self.fr_action_back_list_file = tk.Frame(self.fr_image, width= 100, height= 100, background='gray25')
+            self.fr_action_back_list_file.pack(side='top', fill='x')
             
-            self.btn_back = tk.Button(self.fr_action_back, text='close view', font=('Courier', 10, 'bold'), command= self.action_back)
-            self.btn_back.pack(side='right', fill='x', padx=10, pady=10)
+            # CLOSE PANED OF PREVIEW
+            self.btn_back_list_file = tk.Button(self.fr_action_back_list_file, text='Close view', font=('Courier', 10, 'bold'), command= self.action_back_list_file)
+            self.btn_back_list_file.pack(side='right', fill='x', padx=10, pady=10)
 
-
+            # RENDER IMAGE
             self.lb_image = tk.Label(self.fr_image, text='Select a file to view.', background='gray30', foreground='white', font=('Courier', 12))
-            self.lb_image.pack(fill='both', expand='yes')
+            self.lb_image.pack(side='top', fill='both', expand='yes')
+
+
+            # COMMAND CONTROL
+            self.fr_action_control_file = tk.Frame(self.fr_image, width= 100, height= 100, background='gray25')
+            self.fr_action_control_file.pack(side='bottom', fill='x')
             
-            
+            self.btn_next_file = tk.Button(self.fr_action_control_file, text='Next', font=('Courier', 10, 'bold'), command= self.action_next_file)
+            self.btn_next_file.pack(side='right', fill='x', padx=10, pady=10)
+        
+            self.btn_back_file = tk.Button(self.fr_action_control_file, text='Back', font=('Courier', 10, 'bold'), command= self.action_back_file)
+            self.btn_back_file.pack(side='right', fill='x', padx=10, pady=10)
             
             self.painel_redimensionavel.add(self.fr_image, minsize=220)
 
@@ -91,38 +99,127 @@ class RenderPreview:
             self.preview_active = True
 
 
-    def action_back(self):
+    def action_back_list_file(self) -> None:
         if self.preview_active:
             self.painel_redimensionavel.remove(self.fr_image)
             self.btn_visualizer.configure(state='normal')
             self.preview_active = False
      
+
+    def action_next_file(self) -> None:
+        selected = self.see_list_of_files.selection() # Coleta o item selecionado
+        all_records = self.see_list_of_files.get_children() # Coleta toda a cadeia de itens da treeview
+
+        # Evita IndexError
+        if not selected:
+            return
+
+        index_selected = all_records.index(selected[0]) # Coleta o index do item selecionado
         
-    def action_select_file(self, event):
-        try:
-            self.en_id.delete(0, tk.END)
-            self.see_list_of_files.selection()
+        next_record = index_selected + 1 # Incrementa 1 ao index selecionado
+        
+        if next_record < len(all_records):
+            new_index = all_records[next_record] # Após o incremento, coleta o item do no index
 
-            for n in self.see_list_of_files.selection():
-                columns= self.see_list_of_files.item(n, "values")
-                self.en_id.insert(tk.END, columns[0])
-
-            data= self.bd.read_unique(self.en_id.get())
-
-
-            img= self.service_decompress.decompress_file(data)
-
-            if self.lb_image is None:
-                return
-            else:
+            self.see_list_of_files.selection_remove(selected)
+            self.see_list_of_files.selection_set(new_index) # Move o item selecionado (campo visual da treeview) com base no novo item
+            self.see_list_of_files.focus(new_index) # Foca no novo item (campo visaul da treeview)
+        
+            # Seleciona o itens de cada coluna, mas neste caso é selecionado apenas o campo id da treeview
+            columns= self.see_list_of_files.item(new_index, "values")
+            
+            
+            # Verifica se o widget foi gerado, se não for nulo é realizada a consulta na base de dados
+            # columns[0] é o parâmetro do id na base de dados
+            # Realiza a descrompressão do arquivo e gera o widget para renderizar a imagem selecionada
+            # Se o valor for nulo nenhum passo anterior é realizado
+            if self.lb_image is not None:
+                data= self.bd.read_unique(columns[0])
+                img= self.service_decompress.decompress_file(data)
                 self.lb_image.configure(text='', image=img)
+            else:
+                return
             
-            
-            
-        except Exception as err:
-            print(f"Erro selecting file: ", err)
+        # Trava de limite range
+        if next_record >= len(all_records):
+            self.btn_next_file.configure(state='disabled')
 
-    def action_update_list(self):
+        self.btn_back_file.configure(state='normal')
+            
+            
+    def action_back_file(self) -> None:
+        selected = self.see_list_of_files.selection()
+        all_records = self.see_list_of_files.get_children()
+
+        # Evita IndexError
+        if not selected:
+            return
+
+        index_selected = all_records.index(selected[0])
+        
+        back_record = index_selected - 1
+        
+        if  back_record >= 0:
+            new_index = all_records[back_record]
+
+
+            self.see_list_of_files.selection_set(new_index)
+            self.see_list_of_files.focus(new_index)
+            self.see_list_of_files.see(new_index)
+            
+        
+            columns= self.see_list_of_files.item(new_index, 'values')
+            
+            
+            if self.lb_image is not None:
+                data= self.bd.read_unique(columns[0])
+                img= self.service_decompress.decompress_file(data)
+                self.lb_image.configure(text='', image=img)
+            else:
+                return
+            
+        # Trava de limite range
+        if back_record <= 0:
+            self.btn_back_file.configure(state='disabled')
+
+        self.btn_next_file.configure(state='normal')
+            
+
+    def action_select_file(self, event):
+        selected = self.see_list_of_files.selection()
+        if not selected:
+            return
+            
+        id_item = selected[0]
+            
+        column = self.see_list_of_files.item(id_item, "values")
+        if not column:
+            return
+                
+        data= self.bd.read_unique(column[0])
+        if not data:
+            return
+            
+        if not self._widget_is_alive():
+            return
+            
+        img= self.service_decompress.decompress_file(data)
+            
+        self.lb_image.configure(text='', image=img)
+
+            
+            
+        self.btn_back_file.configure(state='normal')
+        self.btn_next_file.configure(state='normal')
+        
+    def _widget_is_alive(self):
+        try:
+            return self.lb_image.winfo_exists()
+        except Exception:
+            return False
+
+
+    def action_update_list(self) -> None:
         try:
             files = self.bd.read_all()
             self.see_list_of_files.delete(*self.see_list_of_files.get_children())
@@ -132,3 +229,4 @@ class RenderPreview:
         
         except Exception as ex:
             print(f"Erro update list of file: ", ex)
+
