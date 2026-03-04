@@ -47,7 +47,7 @@ class RenderPreview:
         self.see_list_of_files.heading("#5", text='Extension')
         # Treeview - Columns
         self.see_list_of_files.column('#0', width=0, stretch=tk.NO)
-        self.see_list_of_files.column('#1', width=5, anchor="center")
+        self.see_list_of_files.column('#1', width=5, stretch=tk.NO)
         self.see_list_of_files.column('#2', width=100, anchor="center")
         self.see_list_of_files.column('#3', width=150, anchor="center")
         self.see_list_of_files.column('#4', width=100, anchor="center")
@@ -76,23 +76,18 @@ class RenderPreview:
             
             # CLOSE PANED OF PREVIEW
             self.btn_back_list_file = tk.Button(self.fr_action_back_list_file, text='Close view', font=('Courier', 10, 'bold'), command= self.action_back_list_file)
-            self.btn_back_list_file.pack(side='right', fill='x', padx=10, pady=10)
+            self.btn_back_list_file.pack(side='left', fill='x', padx=10, pady=10)
+
+            self.btn_next_file = tk.Button(self.fr_action_back_list_file, text='Next', font=('Courier', 10, 'bold'), command= self.action_next_file)
+            self.btn_next_file.pack(side='right', fill='x', padx=10, pady=10)
+        
+            self.btn_back_file = tk.Button(self.fr_action_back_list_file, text='Back', font=('Courier', 10, 'bold'), command= self.action_back_file)
+            self.btn_back_file.pack(side='right', fill='x', padx=10, pady=10)
 
             # RENDER IMAGE
             self.lb_image = tk.Label(self.fr_image, text='Select a file to view.', background='gray30', foreground='white', font=('Courier', 12))
             self.lb_image.pack(side='top', fill='both', expand='yes')
 
-
-            # COMMAND CONTROL
-            self.fr_action_control_file = tk.Frame(self.fr_image, width= 100, height= 100, background='gray25')
-            self.fr_action_control_file.pack(side='bottom', fill='x')
-            
-            self.btn_next_file = tk.Button(self.fr_action_control_file, text='Next', font=('Courier', 10, 'bold'), command= self.action_next_file)
-            self.btn_next_file.pack(side='right', fill='x', padx=10, pady=10)
-        
-            self.btn_back_file = tk.Button(self.fr_action_control_file, text='Back', font=('Courier', 10, 'bold'), command= self.action_back_file)
-            self.btn_back_file.pack(side='right', fill='x', padx=10, pady=10)
-            
             self.painel_redimensionavel.add(self.fr_image, minsize=220)
 
             self.btn_visualizer.configure(state='disabled')
