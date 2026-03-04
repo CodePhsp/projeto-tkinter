@@ -75,7 +75,7 @@ Essa separação permite:
 
 ## Demonstração
 
-![Demonstração do Sistema](docs/demo.gif)
+![Demonstração do Sistema](docs/demo2.gif)
 
 ---
 
