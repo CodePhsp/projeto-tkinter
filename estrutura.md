@@ -1,9 +1,9 @@
 projeto-customtkinter/
 │
 ├── app/
-│   ├── main.py              # Entry point
+│   ├── main.py              # Orquestrador
 │   │
-│   ├── views/               # Telas (Frames)
+│   ├── views/               # Telas 
 │   │   ├── menu_view.py
 │   │   └── detail_view.py
 │   │
@@ -15,13 +15,7 @@ projeto-customtkinter/
 |   |   └── conversion_service.py
 │   │
 │   └── core/                # Configurações
-│       ├── config.py
-│       └── theme.py
-│
-├── assets/                  # Imagens, ícones
-│
-├── tests/                   # Opcional
-│   └── test_services.py
+│       └── config.py
 │
 ├── requirements.txt
 └── README.md
