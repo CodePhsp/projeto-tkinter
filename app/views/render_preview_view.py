@@ -16,8 +16,8 @@ class RenderPreview:
         self.preview_active = False
     
     
-    def frame_preview(self, root, service_decompress) -> None:
-        self.service_decompress = service_decompress
+    def frame_preview(self, root, service_process) -> None:
+        self.service_process = service_process
         
         self.fr_main = tk.Frame(root, width=100, height=100, background='black')
         self.fr_main.pack(side='left', fill='both', expand='yes')
@@ -130,7 +130,7 @@ class RenderPreview:
             # Se o valor for nulo nenhum passo anterior é realizado
             if self.lb_image is not None:
                 data= self.bd.read_unique(columns[0])
-                img= self.service_decompress.decompress_file(data)
+                img= self.service_process.process_file(data)
                 self.lb_image.configure(text='', image=img)
             else:
                 return
@@ -168,7 +168,7 @@ class RenderPreview:
             
             if self.lb_image is not None:
                 data= self.bd.read_unique(columns[0])
-                img= self.service_decompress.decompress_file(data)
+                img= self.service_process.process_file(data)
                 self.lb_image.configure(text='', image=img)
             else:
                 return
@@ -197,10 +197,12 @@ class RenderPreview:
             
         if not self._widget_is_alive():
             return
-            
-        img= self.service_decompress.decompress_file(data)
+        
+        # Refatorando...
+        img= self.service_process.process_file(data)
             
         self.lb_image.configure(text='', image=img)
+        self.lb_image.image = img
 
             
             

@@ -50,7 +50,7 @@ class RepositoryFile:
 
 
     def read_unique(self, id_file) -> list:
-        sql_query =("SELECT name_file, file FROM tbl_files WHERE id = ? ")
+        sql_query =("SELECT name_file, file, type_file FROM tbl_files WHERE id = ? ")
         self._cursor.execute(sql_query, (id_file,))
         unique_file = self._cursor.fetchall()
         

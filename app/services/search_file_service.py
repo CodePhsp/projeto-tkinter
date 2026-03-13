@@ -8,7 +8,7 @@ class SearchFile():
     Retorna o nome base do arquivo. 
     """
     def ask_file(self) -> dict:
-        ask_file_path = dlg.askopenfilename(filetypes = (("png","*.png"), ("jpg","*.jpg")))
+        ask_file_path = dlg.askopenfilename(filetypes = (("pdf","*.pdf"), ("png","*.png"), ("jpg","*.jpg"), ("xlsx","*.xlsx"), ("pptx","*.pptx")))
         file = Path(ask_file_path) 
 
         data = {

@@ -1,24 +1,20 @@
-from PIL import Image, ImageTk
+
 import zlib
-import io
+
 
 
 # Refatorando...
-class DecompressedFile():
-    def decompress_file(self, id_file):
+class DecompressedFile:
+    def decompress_file(self, id_file) -> dict:
         try:
-            image_bytes = zlib.decompress(id_file[0][1])
-            image_stream = io.BytesIO(image_bytes)
+            file_bytes = zlib.decompress(id_file[0][1])
 
-            image = Image.open(image_stream)
-            image.thumbnail((500,500))
+            data= {
+                'file_bytes': file_bytes,
+                'extension': id_file[0][2]
+            }
 
-            if image is not None:
-                self.decompress_image = ImageTk.PhotoImage(image)
-                image_descompress = self.decompress_image
-                return image_descompress
-            else:
-                return
+            return data
 
         except Exception as err:
             print("Error decompress file:", err)
